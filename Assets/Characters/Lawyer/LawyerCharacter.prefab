@@ -9,10 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6501194429782890941}
-  - component: {fileID: 4145278931239845629}
   - component: {fileID: 5194003876033156671}
   - component: {fileID: 1791523226523348751}
   - component: {fileID: 4694593585152626798}
+  - component: {fileID: 4145278931239845629}
+  - component: {fileID: -2981403589065637341}
+  - component: {fileID: 5811532515086994412}
   m_Layer: 0
   m_Name: LawyerCharacter
   m_TagString: Untagged
@@ -36,21 +38,6 @@ Transform:
   - {fileID: 6046748726882753113}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4145278931239845629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 837461408001431901}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bc5a8f92153a5a4b8fda1bbafdc8888, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  moveSpeed: 10
-  gravity: -9.81
-  jumpForce: 2
 --- !u!50 &5194003876033156671
 Rigidbody2D:
   serializedVersion: 5
@@ -162,6 +149,50 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &4145278931239845629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837461408001431901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc5a8f92153a5a4b8fda1bbafdc8888, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  _moveSpeed: 10
+  _jumpForce: 10
+  _shortHopGravityMultiplier: 2.5
+  _dashDuration: 0.25
+  _dashCooldown: 1
+  _dashSpeed: 20
+--- !u!114 &-2981403589065637341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837461408001431901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936fd3c1698dbda4f83fd15f365d2bb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerVariables
+  _maxHealth: 100
+  _damageMultiplier: 1
+--- !u!114 &5811532515086994412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837461408001431901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3924a7057e706a14789eb6d5c6de0635, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AbilityManager
 --- !u!1 &3663871651344620956
 GameObject:
   m_ObjectHideFlags: 0

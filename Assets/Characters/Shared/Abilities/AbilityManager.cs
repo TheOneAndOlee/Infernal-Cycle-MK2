@@ -1,12 +1,11 @@
 using UnityEngine;
 
-public class AbilityManager
+public class AbilityManager : MonoBehaviour
 {
     private BaseAbility[] abilities;
 
 
     #region Methods
-
     public void AddAbility(BaseAbility ability)
     {
         // Add the ability to the abilities array
@@ -16,6 +15,21 @@ public class AbilityManager
     public void RemoveAbility(BaseAbility ability)
     {
 
+    }
+
+    public void OnAbility1()
+    {
+        abilities[0].ActivateAbility(this);
+    }
+
+    public void OnAbility2()
+    {
+        abilities[1].ActivateAbility(this);
+    }
+
+    public void OnAbility3()
+    {
+        abilities[2].ActivateAbility(this);
     }
 
     #endregion
