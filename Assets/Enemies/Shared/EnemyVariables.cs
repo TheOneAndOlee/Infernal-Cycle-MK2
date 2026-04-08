@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyVariables : MonoBehaviour
@@ -6,18 +7,26 @@ public class EnemyVariables : MonoBehaviour
 
     [Tooltip("This enemy's max health")]
     [SerializeField]
-    private float _maxHealth;
+    private float _maxHealth = 100;
+
+    public float MaxHealth
+    {
+        get => _maxHealth;
+
+        set
+        {
+            _maxHealth = value;
+        }
+    }
+
     private float _health;
 
     public float Health
     {
-        get
-        {
-            return _health;
-        }
+        get => _health;
         set
         {
-            _health = Mathf.Clamp(value, 0, _maxHealth);
+            Mathf.Clamp(value, 0, _maxHealth);
         }
     }
 
@@ -27,51 +36,72 @@ public class EnemyVariables : MonoBehaviour
 
     public float Damage
     {
-        get
-        {
-            return _damage;
-        }
-        set
-        {
-            _damage = value;
-        }
+        get => _damage;
+        set => _damage = value;
+        
     }
 
-    [Tooltip("The movement speed of this enemy")]
+    [Tooltip("Cooldown for the enemy to repeatedly damage the player in seconds")]
     [SerializeField]
-    private float _movementSpeed;
+    private float damageCooldown = 1f;
 
-    public float movementSpeed
+    public float DamageCooldown
     {
-        get
-        {
-            return _movementSpeed;
-        }
-        set
-        {
-            _movementSpeed = value;
-        }
+        get => damageCooldown;
+        set => damageCooldown = value;
     }
+
+    private bool canDamagePlayer = true;
 
     #endregion
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
         _health = _maxHealth;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (collision == null) return;
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            if (canDamagePlayer)
+            {
+                //Debug.Log("Collided with player. Dealing damage...");
+                collision.gameObject.GetComponent<PlayerVariables>().Health -= Damage;
+                StartCoroutine(GoOnDamageCooldown());
+            }
+        }
+    }
+
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision == null) return;
+
+    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+    //    {
+    //        if (canDamagePlayer)
+    //        {
+    //            Debug.Log("Collided with player. Dealing damage...");
+    //            collision.gameObject.GetComponent<PlayerVariables>().Health -= Damage;
+    //            StartCoroutine(GoOnDamageCooldown());
+    //        }
+    //    }
+    //}
+
+    private IEnumerator GoOnDamageCooldown()
+    {
+        yield return new WaitForSeconds(damageCooldown);
+        canDamagePlayer = true;
     }
 
     private void HandleEnemyHealthUpdates()
     {
         if (_health < 0)
         {
-            // Die
+            Debug.Log("Enemy is dead. Despawning...");
+            Destroy(this);
         }
 
         // Do other stuff (if applicable)

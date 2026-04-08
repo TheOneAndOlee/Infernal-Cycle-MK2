@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using System.Collections;
 
 public class PlayerVariables : MonoBehaviour
 {
@@ -13,12 +14,10 @@ public class PlayerVariables : MonoBehaviour
 
     private float originalMaxHealth;
 
-    private float MaxHealth
+    public float MaxHealth
     {
-        get
-        {
-            return _maxHealth;
-        }
+        get => _maxHealth;
+       
         set
         {
             originalMaxHealth = _maxHealth;
@@ -27,16 +26,31 @@ public class PlayerVariables : MonoBehaviour
         }
     }
 
-    private float Health
+    public float Health
     {
-        get
-        {
-            return _health;
-        }
+        get => _health;
+
         set
         {
+            // Healing, so don't worry about i-frames
+            if (value > _health)
+            {
+                _health = Math.Clamp(value, 0, _maxHealth);
+                HandleHealthUpdates();
+            }
+
+            if (!Damageable)
+            {
+                Debug.Log("Player is currently invincible!");
+                return;
+            }
+
+            // We did take damage, so add i-frames
+            Damageable = false;
             _health = Math.Clamp(value, 0, _maxHealth);
             HandleHealthUpdates();
+            StartCoroutine(IFrames());
+            
         }
     }
 
@@ -45,17 +59,22 @@ public class PlayerVariables : MonoBehaviour
 
     public float DamageMultiplier
     {
-        get
-        {
-            return _damageMultiplier;
-        }
-        set
-        {
-            _damageMultiplier = value;
-        }
+        get => _damageMultiplier;
+        set => _damageMultiplier = value;
+    }
+
+    [Tooltip("Duration of i-frames in seconds")]
+    [SerializeField]
+    private float iFrameDuration = 1f;
+
+    public float IFrameDuration
+    {
+        get => iFrameDuration;
+        set => iFrameDuration = value;
     }
 
     private PlayerInput _playerInput;
+    private bool Damageable = true;
 
     #endregion
 
@@ -67,15 +86,9 @@ public class PlayerVariables : MonoBehaviour
         _playerInput.ActivateInput();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     #region Methods
 
-    public void OnTestButton(InputValue value)
+    public void OnTestButton2(InputValue value)
     {
         Debug.Log("Subtracting 25 health from player");
         Health -= 25;
@@ -88,8 +101,14 @@ public class PlayerVariables : MonoBehaviour
         {
             Die();
         }
-
         // Update Health Bar
+    }
+
+    private IEnumerator IFrames()
+    {
+        Debug.Log("Player is now invulnerable for " + iFrameDuration + " seconds.");
+        yield return new WaitForSeconds(iFrameDuration);
+        Damageable = true;
     }
 
     private void UpdateMaxHealth()

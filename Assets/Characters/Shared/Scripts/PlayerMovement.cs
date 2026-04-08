@@ -6,36 +6,44 @@ using System.Collections;
 public class PlayerMovement : MonoBehaviour
 {
     #region Variable Getters & Setters
-    [Tooltip("Horizontal Movement Speed")]
-    [SerializeField]
+    //[Tooltip("Note: Do not change this variable, change DefaultMovementSpeed. Horizontal Movement Speed")]
+    //[SerializeField]
     private float _moveSpeed = 10f;
 
     public float MoveSpeed
     {
-        get
-        {
-            return _moveSpeed;
-        }
-        set
-        {
-            _moveSpeed = value;
-        }
+        get => _moveSpeed;
+        set => _moveSpeed = value;
     }
 
-    [Tooltip("Vertical Jump Force")]
+    [Tooltip("Default Horizontal Movement Speed")]
     [SerializeField]
+    private float _defaultMoveSpeed = 10f;
+
+    public float DefaultMoveSpeed
+    {
+        get => _defaultMoveSpeed;
+        set => _defaultMoveSpeed = value;
+    }
+
+    //[Tooltip("Note: Do not change this value, change DefaultJumpForce. Vertical Jump Force")]
+    //[SerializeField]
     private float _jumpForce = 10f;
 
     public float JumpForce
     {
-        get
-        {
-            return _jumpForce;
-        }
-        set
-        {
-            _jumpForce = value;
-        }
+        get => _jumpForce;
+        set => _jumpForce = value;
+    }
+
+    [Tooltip("Default Jump Force")]
+    [SerializeField]
+    private float _defaultJumpForce = 10f;
+
+    public float DefaultJumpForce
+    {
+        get => _defaultJumpForce;
+        set => _defaultJumpForce = value;
     }
 
     [Tooltip("Multiplier applied to gravity when space bar is released early")]
@@ -44,55 +52,72 @@ public class PlayerMovement : MonoBehaviour
 
     public float ShortHopGravityMultiplier
     {
-        get
-        {
-            return _shortHopGravityMultiplier;
-        }
-        set
-        {
-            _shortHopGravityMultiplier = value;
-        }
+        get => _shortHopGravityMultiplier;
+        set => _shortHopGravityMultiplier = value;
     }
 
     //[Tooltip("Buffer time for a pre-inputted jump")]
     //[SerializeField]
     //private float _jumpBufferTime = 0.2f;
 
-    [Tooltip("Dash Duration in seconds")]
-    [SerializeField]
+    //[Tooltip("Dash Duration in seconds")]
+    //[SerializeField]
     private float _dashDuration = 0.2f;
-
-    [Tooltip("Dash Cooldown in seconds")]
-    [SerializeField]
-    private float _dashCooldown = 1f;
 
     public float DashDuration
     {
-        get
-        {
-            return _dashDuration;
-        }
-        set
-        {
-            _dashDuration = value;
-        }
+        get => _dashDuration;
+        set => _dashDuration = value;
     }
 
-    [Tooltip("Player speed while dashing")]
+    [Tooltip("Default Dash Duration in Seconds")]
+    [SerializeField] 
+    private float _defaultDashDuration = 0.2f;
+
+    public float DefaultDashDuration
+    {
+        get => _defaultDashDuration;
+        set => _defaultDashDuration = value;
+    }
+
+    //[Tooltip("Dash Cooldown in seconds")]
+    //[SerializeField]
+    private float _dashCooldown = 1f;
+
+    public float DashCooldown
+    {
+        get => _dashCooldown;
+        set => _dashCooldown = value;
+    }
+
+    [Tooltip("Default Dash Cooldown in Seconds")]
     [SerializeField]
+    private float _defaultDashCooldown = 1f;
+
+    public float DefaultDashCooldown
+    {
+        get => _defaultDashCooldown;
+        set => _defaultDashCooldown = value;
+    }
+
+    //[Tooltip("Player speed while dashing")]
+    //[SerializeField]
     private float _dashSpeed = 15f;
 
-    private float DashSpeed
+    public float DashSpeed
     {
-        get
-        {
-            return _dashSpeed;
-        }
+        get => _dashSpeed;
+        set => _dashSpeed = value;
+    }
 
-        set
-        {
-            _dashSpeed = value;
-        }
+    [Tooltip("Default Dash Speed")]
+    [SerializeField]
+    private float _defaultDashSpeed = 15f;
+
+    public float DefaultDashSpeed
+    {
+        get => _defaultDashSpeed;
+        set => _defaultDashSpeed = value;
     }
 
     private bool isDashing = false;
@@ -110,8 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 movementVector;
 
-    private LayerMask groundLayer;
-    private LayerMask platformLayer;
+    private PlayerCollision playerCollision;
 
     #endregion
 
@@ -119,11 +143,15 @@ public class PlayerMovement : MonoBehaviour
     {
         playerTransform = transform;
         rbody = GetComponent<Rigidbody2D>();
+        playerCollision = GetComponent<PlayerCollision>();
         defaultGravity = rbody.gravityScale;
         canDash = true;
 
-        groundLayer = LayerMask.GetMask("Ground");
-        platformLayer = LayerMask.GetMask("Platform");
+        MoveSpeed = DefaultMoveSpeed;
+        JumpForce = DefaultJumpForce;
+        DashSpeed = DefaultDashSpeed;
+        DashDuration = DefaultDashDuration;
+        DashCooldown = DefaultDashCooldown;
     }
 
     #region Update & FixedUpdate
@@ -136,12 +164,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (jumpBufferCounter > 0f)
         {
-            if (IsOnPlatform() && movementVector.y < -0.5f)
+            if (playerCollision.IsOnPlatform() && movementVector.y < -0.5f)
             {
-                ledgeDrop();
+                LedgeDrop();
                 jumpBufferCounter = 0;
             }
-            else if (IsOnPlatform() || IsGrounded())
+            else if (playerCollision.IsOnPlatform() || playerCollision.IsGrounded())
             {
                 rbody.linearVelocity = new Vector2(rbody.linearVelocityX, _jumpForce);
                 jumpBufferCounter = 0f;
@@ -172,9 +200,9 @@ public class PlayerMovement : MonoBehaviour
 
     #region Movement Methods    
 
-    private void ledgeDrop()
+    private void LedgeDrop()
     {
-        if (IsOnPlatform())
+        if (playerCollision.IsOnPlatform())
         {
             StartCoroutine(DropThroughPlatform());
         }
@@ -184,12 +212,12 @@ public class PlayerMovement : MonoBehaviour
     {
         Debug.Log("Dropping through platform...");
 
-        disableCollision("Platform");
+        playerCollision.DisableCollision("Platform");
 
         yield return new WaitForSeconds(0.2f);
-        yield return new WaitUntil(() => !IsOnPlatform());
+        yield return new WaitUntil(() => !playerCollision.IsOnPlatform());
 
-        enableCollision("Platform");
+        playerCollision.EnableCollision("Platform");
     }
 
     private IEnumerator Dash()
@@ -203,11 +231,11 @@ public class PlayerMovement : MonoBehaviour
 
         rbody.linearVelocity = new Vector2(dashDirection * _dashSpeed, 0);
 
-        disableCollision("Enemy");
+        playerCollision.DisableCollision("Enemy");
 
         yield return new WaitForSeconds(_dashDuration);
 
-        enableCollision("Enemy");
+        playerCollision.EnableCollision("Enemy");
 
         rbody.gravityScale = defaultGravity;
         isDashing = false;
@@ -252,53 +280,10 @@ public class PlayerMovement : MonoBehaviour
 
         isJumpButtonHeld = value.isPressed;
 
-        if (value.isPressed)
+        if (isJumpButtonHeld)
         {
             jumpBufferCounter = 0.2f;
-
-            //Debug.Log("Is On Platform Status: " + IsOnPlatform());
-            //Debug.Log("Downwards Input: " + movementVector.y);
         }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("Collided with: " + collision.gameObject.name);
-    }
-
-    #endregion
-
-    #region Helper Functions
-    public bool IsOnPlatform()
-    {
-        float raycastDist = 1.2f;
-        RaycastHit2D raycast = Physics2D.Raycast(playerTransform.position, Vector2.down, raycastDist, platformLayer);
-
-        return raycast.collider != null;
-    }
-
-    public bool IsGrounded()
-    {
-        float raycastDist = 1.2f;
-        RaycastHit2D raycast = Physics2D.Raycast(playerTransform.position, Vector2.down, raycastDist, groundLayer);
-
-        return raycast.collider != null;
-    }
-
-    public void disableCollision(string LayerName)
-    {
-        int platformLayerNum = LayerMask.NameToLayer(LayerName);
-
-        Debug.Log(platformLayerNum);
-
-        Physics2D.IgnoreLayerCollision(gameObject.layer, platformLayerNum, true);
-    }
-
-    public void enableCollision(string LayerName)
-    {
-        int platformLayerNum = LayerMask.NameToLayer(LayerName);
-
-        Physics2D.IgnoreLayerCollision(gameObject.layer, platformLayerNum, false);
     }
 
     #endregion
