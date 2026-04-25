@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Bandage
   m_EditorClassIdentifier: Assembly-CSharp::Bandage
   itemName: Bandage
-  itemDescription: Heals 1% of the players health every second.
+  itemDescription: Heals 1% of the players health every 5 seconds.
+  itemRarity: 0
+  itemUseType: 0
+  itemClass: 0
   regenMultiplier: 0.01
-  playerVariables: {fileID: 0}
   healInterval: 1

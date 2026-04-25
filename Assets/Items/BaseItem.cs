@@ -5,6 +5,28 @@ using UnityEngine;
 //[CreateAssetMenu(fileName = "BaseItem", menuName = "Scriptable Objects/BaseItem")]
 public abstract class BaseItem : ScriptableObject
 {
+    public enum ItemRarity
+    {
+        Common,
+        Uncommon,
+        Rare,
+        Epic,
+        Legendary
+    }
+
+    public enum ItemUseType
+    {
+        Passive,
+        Active
+    }
+
+    public enum ItemClass
+    {
+        Defense,
+        Offense,
+        Support
+    }
+
     [SerializeField]
     private string itemName;
     public string ItemName
@@ -16,11 +38,18 @@ public abstract class BaseItem : ScriptableObject
     [TextArea]
     public string itemDescription;
 
+    [SerializeField] private ItemRarity itemRarity;
+    [SerializeField] private ItemUseType itemUseType;
+    [SerializeField] private ItemClass itemClass;
+
+    public ItemRarity Rarity => itemRarity;
+    public ItemUseType UseType => itemUseType;
+    public ItemClass Classification => itemClass;
+
     /// <summary>
     /// Runs a 1-time effect upon item usage
     /// Overriden when inherited
     /// </summary>
-    /// <param name="manager"></param>
     public virtual void UseItem(ItemManager manager)
     {
         Debug.Log("Using item: " + itemName);
@@ -30,7 +59,6 @@ public abstract class BaseItem : ScriptableObject
     /// A coroutine for continuous item effects (heal over time, temporary boosts, etc.)
     /// Also overridden as needed
     /// </summary>
-    /// <returns></returns>
     public virtual IEnumerator PassiveItemEffect(ItemManager manager, int stacks)
     {
         yield break;

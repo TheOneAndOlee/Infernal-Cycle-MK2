@@ -18,7 +18,7 @@ public class PlayerCollision : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Trigger Collision Detected!");
+        //Debug.Log("Trigger Collision Detected!");
 
         if (collision == null)
         {
@@ -27,14 +27,15 @@ public class PlayerCollision : MonoBehaviour
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("EnemyHitbox"))
         {
-            Debug.Log("Collided with enemy: " + collision.gameObject.name);
-            float incomingDamage = collision.gameObject.GetComponent<EnemyVariables>().Damage;
+            //Debug.Log("Collided with enemy: " + collision.gameObject.name);
+            
+            float incomingDamage = collision.gameObject.GetComponentInParent<EnemyVariables>().Damage;
             playerVariables.Health -= incomingDamage;
         }
-        else
-        {
-            Debug.Log("Collided with: " + collision.gameObject.name);
-        }
+        //else
+        //{
+        //    Debug.Log("Collided with: " + collision.gameObject.name);
+        //}
     }
 
     #region Helper Functions
@@ -58,7 +59,7 @@ public class PlayerCollision : MonoBehaviour
     {
         int platformLayerNum = LayerMask.NameToLayer(LayerName);
 
-        Debug.Log(platformLayerNum);
+        //Debug.Log(platformLayerNum);
 
         Physics2D.IgnoreLayerCollision(gameObject.layer, platformLayerNum, true);
     }

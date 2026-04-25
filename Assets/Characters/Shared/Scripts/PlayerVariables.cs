@@ -35,6 +35,7 @@ public class PlayerVariables : MonoBehaviour
             // Healing, so don't worry about i-frames
             if (value > _health)
             {
+                _health += value;
                 _health = Math.Clamp(value, 0, _maxHealth);
                 HandleHealthUpdates();
             }
@@ -47,6 +48,7 @@ public class PlayerVariables : MonoBehaviour
 
             // We did take damage, so add i-frames
             Damageable = false;
+            _health += value;
             _health = Math.Clamp(value, 0, _maxHealth);
             HandleHealthUpdates();
             StartCoroutine(IFrames());
@@ -73,6 +75,14 @@ public class PlayerVariables : MonoBehaviour
         set => iFrameDuration = value;
     }
 
+    // Money for upgrades & items
+    private float _money = 0f;
+    public float Money
+    {
+        get => _money;
+        set => _money = value;
+    }
+
     private PlayerInput _playerInput;
     private bool Damageable = true;
 
@@ -90,8 +100,8 @@ public class PlayerVariables : MonoBehaviour
 
     public void OnTestButton2(InputValue value)
     {
-        Debug.Log("Subtracting 25 health from player");
-        Health -= 25;
+        Debug.Log("Adding 100 money to player");
+        Money += 100;
     }
 
     private void HandleHealthUpdates()

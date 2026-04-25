@@ -15,4 +15,7 @@ MonoBehaviour:
   itemName: White Monster
   itemDescription: 'A crisp, clean can of Monster Energy Zero Ultra. Increases movement
     speed by a small amount. '
-  speedBoost: 0.5
+  itemRarity: 0
+  itemUseType: 0
+  itemClass: 2
+  speedBoost: 0.1

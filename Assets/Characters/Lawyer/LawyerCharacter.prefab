@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3009751003501567303}
   - component: {fileID: 5811532515086994412}
   - component: {fileID: 6104986171797465383}
+  - component: {fileID: 3473475283033823998}
   m_Layer: 8
   m_Name: LawyerCharacter
   m_TagString: Untagged
@@ -101,8 +102,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
+  m_Offset: {x: -0.017411023, y: -0.034822345}
+  m_Size: {x: 0.7562439, y: 1.7446363}
   m_Direction: 0
 --- !u!114 &4694593585152626798
 MonoBehaviour:
@@ -160,6 +161,7 @@ MonoBehaviour:
   _defaultDashDuration: 0.2
   _defaultDashCooldown: 1
   _defaultDashSpeed: 15
+  _animator: {fileID: 356059930809129591}
 --- !u!114 &-2981403589065637341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +216,22 @@ MonoBehaviour:
   playerVariables: {fileID: -2981403589065637341}
   playerMovement: {fileID: 4145278931239845629}
   testItem: {fileID: 11400000, guid: 3ea5486432b5211418cd3f1a6b014ee2, type: 2}
+--- !u!114 &3473475283033823998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837461408001431901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc399c826b796d04da8e3df6a85995c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LawyerScript
+  movement: {fileID: 4145278931239845629}
+  animator: {fileID: 356059930809129591}
+  meleeWeaponScript: {fileID: 811314153865191188}
+  EnemyDamage: 50
 --- !u!1 &3663871651344620956
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,8 +242,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6046748726882753113}
   - component: {fileID: 6932589040842414439}
-  m_Layer: 8
-  m_Name: CharacterImage
+  - component: {fileID: 356059930809129591}
+  - component: {fileID: 6374211452504352612}
+  - component: {fileID: 7326997528762892313}
+  - component: {fileID: 811314153865191188}
+  m_Layer: 11
+  m_Name: VisualHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -241,7 +263,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.590088, y: 1.590088, z: 1.590088}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6501194429782890941}
@@ -295,7 +317,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: bd3cb4af8406d4436a2ae8c2aafe1f8d, type: 3}
+  m_Sprite: {fileID: 5905681027756182028, guid: 8804b6ff41c540a4b914a23ef3278d3e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -305,3 +327,88 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!95 &356059930809129591
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663871651344620956}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b4198842d501ee944b596bf76863e16b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!70 &6374211452504352612
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663871651344620956}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.23, y: 0.14}
+  m_Size: {x: 0.71, y: 1.26}
+  m_Direction: 0
+--- !u!114 &7326997528762892313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663871651344620956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2091c04a7df03f4d9b8b47ab4f8e72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LawyerAnimationEvents
+  lawyerScript: {fileID: 3473475283033823998}
+--- !u!114 &811314153865191188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3663871651344620956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29966f940e5be36498278afa92cf56a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeleeWeaponScript
+  script: {fileID: 3473475283033823998}

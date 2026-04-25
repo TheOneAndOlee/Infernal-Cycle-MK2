@@ -56,10 +56,6 @@ public class PlayerMovement : MonoBehaviour
         set => _shortHopGravityMultiplier = value;
     }
 
-    //[Tooltip("Buffer time for a pre-inputted jump")]
-    //[SerializeField]
-    //private float _jumpBufferTime = 0.2f;
-
     //[Tooltip("Dash Duration in seconds")]
     //[SerializeField]
     private float _dashDuration = 0.2f;
@@ -120,6 +116,14 @@ public class PlayerMovement : MonoBehaviour
         set => _defaultDashSpeed = value;
     }
 
+    private float _lastHorizontalDirection = 1f;
+    public float LastHorizontalDirection
+    {
+        get => _lastHorizontalDirection;
+        set => _lastHorizontalDirection = value;
+    }
+
+
     private bool isDashing = false;
     private bool canDash = false;
 
@@ -128,7 +132,6 @@ public class PlayerMovement : MonoBehaviour
     private float defaultGravity;
     private bool isJumpButtonHeld;
     private float horizontalInput;
-    private float lastHorizontalDirection = 1f;
 
     private Rigidbody2D rbody;
     private Transform playerTransform;
@@ -136,6 +139,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movementVector;
 
     private PlayerCollision playerCollision;
+
+    // Animations
+    [SerializeField]
+    private Animator _animator;
 
     #endregion
 
@@ -196,6 +203,31 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void UpdateAnimations()
+    {
+        //Debug.Log(_animator.GetBool("IsMoving") + " " + _animator.GetBool("IsJumping") + " " + _animator.GetBool("IsFalling"));
+
+        if (_animator != null)
+        {
+            bool isGrounded = playerCollision.IsGrounded() || playerCollision.IsOnPlatform();
+            _animator.SetBool("IsMoving", isGrounded && Mathf.Abs(horizontalInput) > 0.01f);
+            _animator.SetBool("IsJumping", !isGrounded && rbody.linearVelocityY > 0.1f);
+            _animator.SetBool("IsFalling", !isGrounded && rbody.linearVelocityY < -0.1f);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (_lastHorizontalDirection != 0)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Abs(scale.x) * -_lastHorizontalDirection;
+            transform.localScale = scale;
+        }
+
+        UpdateAnimations();
+    }
+
     #endregion
 
     #region Movement Methods    
@@ -227,7 +259,7 @@ public class PlayerMovement : MonoBehaviour
 
         canDash = false;
 
-        float dashDirection = Mathf.Abs(horizontalInput) > 0.01f ? Mathf.Sign(horizontalInput) : lastHorizontalDirection;
+        float dashDirection = Mathf.Abs(horizontalInput) > 0.01f ? Mathf.Sign(horizontalInput) : _lastHorizontalDirection;
 
         rbody.linearVelocity = new Vector2(dashDirection * _dashSpeed, 0);
 
@@ -256,9 +288,9 @@ public class PlayerMovement : MonoBehaviour
         // Implement movement logic here
         horizontalInput = value.Get<Vector2>().x;
 
-        if (Mathf.Abs(horizontalInput) > 0.01f)
+        if (Mathf.Abs(horizontalInput) > 0.1f)
         {
-            lastHorizontalDirection = Mathf.Sign(horizontalInput);
+            _lastHorizontalDirection = Mathf.Sign(horizontalInput);
         }
 
         movementVector.y = value.Get<Vector2>().y;

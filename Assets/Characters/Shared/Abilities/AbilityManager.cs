@@ -4,7 +4,6 @@ public class AbilityManager : MonoBehaviour
 {
     private BaseAbility[] abilities;
 
-
     #region Methods
     public void UpdateAbilities(BaseAbility ability, int slot)
     {
@@ -29,17 +28,17 @@ public class AbilityManager : MonoBehaviour
 
     public void OnAbility1()
     {
-        abilities[0].ActivateAbility(this);
+        abilities[0].UseAbility(this);
     }
 
     public void OnAbility2()
     {
-        abilities[1].ActivateAbility(this);
+        abilities[1].UseAbility(this);
     }
 
     public void OnAbility3()
     {
-        abilities[2].ActivateAbility(this);
+        abilities[2].UseAbility(this);
     }
 
     #endregion

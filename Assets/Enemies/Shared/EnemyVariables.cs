@@ -26,7 +26,11 @@ public class EnemyVariables : MonoBehaviour
         get => _health;
         set
         {
-            Mathf.Clamp(value, 0, _maxHealth);
+            //_health += value;
+            _health = Mathf.Clamp(value, 0, _maxHealth);
+            Debug.Log("Enemy health updated: " + _health + "/" + MaxHealth);
+            
+            HandleEnemyHealthUpdates();            
         }
     }
 
@@ -60,7 +64,7 @@ public class EnemyVariables : MonoBehaviour
         _health = _maxHealth;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnColliderEnter2D(Collider2D collision)
     {
         if (collision == null) return;
 
@@ -75,21 +79,6 @@ public class EnemyVariables : MonoBehaviour
         }
     }
 
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (collision == null) return;
-
-    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
-    //    {
-    //        if (canDamagePlayer)
-    //        {
-    //            Debug.Log("Collided with player. Dealing damage...");
-    //            collision.gameObject.GetComponent<PlayerVariables>().Health -= Damage;
-    //            StartCoroutine(GoOnDamageCooldown());
-    //        }
-    //    }
-    //}
-
     private IEnumerator GoOnDamageCooldown()
     {
         yield return new WaitForSeconds(damageCooldown);
@@ -98,10 +87,10 @@ public class EnemyVariables : MonoBehaviour
 
     private void HandleEnemyHealthUpdates()
     {
-        if (_health < 0)
+        if (_health <= 0)
         {
             Debug.Log("Enemy is dead. Despawning...");
-            Destroy(this);
+            Destroy(gameObject);
         }
 
         // Do other stuff (if applicable)

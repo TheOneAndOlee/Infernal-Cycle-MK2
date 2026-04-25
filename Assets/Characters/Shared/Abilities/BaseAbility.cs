@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using System.Collections;
 
-[CreateAssetMenu(fileName = "BaseAbility", menuName = "Scriptable Objects/BaseAbility")]
-public class BaseAbility : ScriptableObject
+//[CreateAssetMenu(fileName = "BaseAbility", menuName = "Scriptable Objects/BaseAbility")]
+public abstract class BaseAbility : ScriptableObject
 {
     #region Properties
 
@@ -30,62 +29,45 @@ public class BaseAbility : ScriptableObject
 
     #region Getters and Setters
 
-    private string AbilityName
+    public string AbilityName
     {
-        get
-        {
-            return _abilityName;
-        }
+        get => _abilityName;
     }
 
-    private float AbilityCooldown
+    public float AbilityCooldown
     {
-        get
-        {
-            return _abilityCooldown;
-        }
-        set
-        {
-            _abilityCooldown = value;
-        }
+        get => _abilityCooldown;   
+        set => _abilityCooldown = value;
     }
 
     private string AbilityDescription
     {
-        get
-        {
-            return _abilityDescription;
-        }
-        set
-        {
-            _abilityDescription = value;
-        }
+        get => _abilityDescription;
+        set => _abilityDescription = value;
     }
 
     private float AbilityDuration
     {
-        get
-        {
-            return _abilityDuration;
-        }
-        set
-        {
-            _abilityDuration = value;
-        }
+        get => _abilityDuration;
+        set => _abilityDuration = value;
     }
     #endregion
 
     #region Methods
 
-    virtual public void ActivateAbility(MonoBehaviour runner)
+    public virtual void UseAbility(AbilityManager manager)
     {
         if (isOnCooldown)
         {
             return;
         }
 
-        // Activate ability here
-        runner.StartCoroutine(GoOnCooldown());
+        manager.StartCoroutine(GoOnCooldown());
+    }
+
+    public virtual IEnumerator PassiveAbilityEffect(AbilityManager manager, int stacks)
+    {
+        yield break;
     }
 
     #endregion 
