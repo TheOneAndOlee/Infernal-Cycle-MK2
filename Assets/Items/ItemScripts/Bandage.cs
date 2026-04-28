@@ -14,7 +14,7 @@ public class Bandage : BaseItem
     {
         while (true)
         {
-            manager.Player.Health += manager.Player.MaxHealth * regenMultiplier * stacks;
+            manager.Variables.Health += manager.Variables.MaxHealth * (regenMultiplier / 100) * stacks;
 
             yield return new WaitForSeconds(healInterval);
         }

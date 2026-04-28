@@ -1,10 +1,45 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEngine.Rendering.DebugUI;
 
 public class AbilityManager : MonoBehaviour
 {
-    private BaseAbility[] abilities;
+    private BaseAbility[] abilities = new BaseAbility[3];
+
+    [Header("Lawyer Abilities")]
+    [SerializeField] private BaseAbility pleaDeal;
+
+    [Header("Nurse Abilities")]
+
+    public static AbilityManager Instance;
 
     #region Methods
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+
+        //Debug.Log("This gameobject is: " + this.gameObject.GetComponent<LawyerScript>());
+
+        if (this.gameObject.GetComponent<LawyerScript>() == null)
+        {
+            // Add Nurse Abilities to array
+        } 
+        else
+        {
+            Debug.Log("Adding lawyer abilities");
+            
+            abilities[0] = pleaDeal;
+            // abilities[1] = ability1
+        }
+    }
+
     public void UpdateAbilities(BaseAbility ability, int slot)
     {
         // Add the ability to the abilities array
@@ -21,24 +56,45 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    public void RemoveAbility(BaseAbility ability)
+    public void RemoveAbility(BaseAbility abilityToRemove)
     {
-
+        for (int i = 0; i <  abilities.Length; i++)
+        {
+            if (abilities[i].Equals(abilityToRemove))
+            {
+                abilities[i] = null; 
+            }
+        }
     }
 
-    public void OnAbility1()
+    public void OnAbility1(InputValue value)
     {
-        abilities[0].UseAbility(this);
+        if (value.isPressed)
+        {
+            Debug.Log("Using ability 1");
+            
+            abilities[0].UseAbility(this);
+        }
     }
 
-    public void OnAbility2()
+    public void OnAbility2(InputValue value)
     {
-        abilities[1].UseAbility(this);
+        if (value.isPressed)
+        {
+            Debug.Log("Using ability 2");
+
+            abilities[1].UseAbility(this);
+        }
     }
 
-    public void OnAbility3()
+    public void OnAbility3(InputValue value)
     {
-        abilities[2].UseAbility(this);
+        if (value.isPressed)
+        {
+            Debug.Log("Using ability 3");
+
+            abilities[2].UseAbility(this);
+        }
     }
 
     #endregion

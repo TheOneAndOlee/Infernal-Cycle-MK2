@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 //[CreateAssetMenu(fileName = "BaseItem", menuName = "Scriptable Objects/BaseItem")]
 public abstract class BaseItem : ScriptableObject
@@ -42,6 +43,9 @@ public abstract class BaseItem : ScriptableObject
     [SerializeField] private ItemUseType itemUseType;
     [SerializeField] private ItemClass itemClass;
 
+    public Image image;
+
+    public float price;
     public ItemRarity Rarity => itemRarity;
     public ItemUseType UseType => itemUseType;
     public ItemClass Classification => itemClass;
@@ -64,4 +68,13 @@ public abstract class BaseItem : ScriptableObject
         yield break;
     }
 
+    /// <summary>
+    /// A overrideable function to trigger on-hit effects
+    /// </summary>
+    /// <param name="enemy"></param>
+    /// <param name="manager"></param>
+    public virtual void OnEnemyDamaged(GameObject enemy, ItemManager manager)
+    {
+
+    }
 }

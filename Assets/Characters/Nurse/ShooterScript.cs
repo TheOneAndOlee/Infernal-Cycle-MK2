@@ -6,10 +6,9 @@ using System.Collections;
 public class ShooterScript : MonoBehaviour
 {
     #region Getters and Setters
-
     [Tooltip("Damage per shot")]
     [SerializeField]
-    private float _damage = 10f;
+    private float _damage = 25f;
 
     public float Damage
     {
@@ -42,7 +41,6 @@ public class ShooterScript : MonoBehaviour
     }
 
     private bool canShoot = true;
-
     #endregion
 
     public void FireBullet()
@@ -53,7 +51,7 @@ public class ShooterScript : MonoBehaviour
 
             var bullet = Instantiate(_bulletPrefab, transform.position, Quaternion.identity);
 
-            bullet.GetComponent<PlayerBullet>().EnemyDamage = Damage;
+            bullet.GetComponent<PlayerBullet>().EnemyDamage = Damage * PlayerVariables.Instance.DamageMultiplier;
 
             var bulletRbody = bullet.GetComponent<Rigidbody2D>();
 
@@ -79,6 +77,11 @@ public class ShooterScript : MonoBehaviour
             Debug.Log("Shooting on cooldown");
         }
 
+    }
+
+    public void OnAttack(InputValue value)
+    {
+        FireBullet();
     }
 
     private IEnumerator FireCooldown()

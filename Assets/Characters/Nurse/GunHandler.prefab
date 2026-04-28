@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdf3a3a08ca0f194f9a768505616e82f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShooterScript
-  _damage: 10
+  _damage: 25
   _fireRate: 0.5
   _bulletPrefab: {fileID: 1075995349916506622, guid: 5fa046706d3e3b24cbe8e7dab2e2c45e, type: 3}
   _bulletSpeed: 30

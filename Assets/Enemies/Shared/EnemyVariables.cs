@@ -57,6 +57,10 @@ public class EnemyVariables : MonoBehaviour
 
     private bool canDamagePlayer = true;
 
+    [Tooltip("How much money the player gets from defeating the enemy")]
+    [SerializeField]
+    private float moneyOnDeath = 30f;
+
     #endregion
 
     private void Awake()
@@ -90,6 +94,9 @@ public class EnemyVariables : MonoBehaviour
         if (_health <= 0)
         {
             Debug.Log("Enemy is dead. Despawning...");
+
+            PlayerVariables.Instance.Money += moneyOnDeath;
+
             Destroy(gameObject);
         }
 

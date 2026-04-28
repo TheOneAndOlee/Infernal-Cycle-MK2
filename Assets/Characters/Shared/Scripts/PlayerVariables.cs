@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
+using UnityEngine.Events;
 
 public class PlayerVariables : MonoBehaviour
 {
@@ -35,9 +38,10 @@ public class PlayerVariables : MonoBehaviour
             // Healing, so don't worry about i-frames
             if (value > _health)
             {
-                _health += value;
-                _health = Math.Clamp(value, 0, _maxHealth);
+                _health += (value * HealingMultiplier);
+                _health = Math.Clamp(value, 0, MaxHealth);
                 HandleHealthUpdates();
+                return;
             }
 
             if (!Damageable)
@@ -48,8 +52,8 @@ public class PlayerVariables : MonoBehaviour
 
             // We did take damage, so add i-frames
             Damageable = false;
-            _health += value;
-            _health = Math.Clamp(value, 0, _maxHealth);
+            _health += (value * IncomingDamageMultiplier);
+            _health = Math.Clamp(value, 0, MaxHealth);
             HandleHealthUpdates();
             StartCoroutine(IFrames());
             
@@ -65,9 +69,28 @@ public class PlayerVariables : MonoBehaviour
         set => _damageMultiplier = value;
     }
 
+    [Tooltip("Incoming Damage Multiplayer for the player")]
+    [SerializeField] private float _incomingDamageMultiplier = 1f;
+
+    public float IncomingDamageMultiplier
+    {
+        get => _incomingDamageMultiplier;
+        set => _incomingDamageMultiplier = value;
+    }
+
+    [Tooltip("Healing Multiplier for the player")]
+    [SerializeField] private float _healingMultiplier = 1f;
+
+    public float HealingMultiplier
+    {
+        get => _healingMultiplier;
+        set => _healingMultiplier = value;
+    }
+
+
     [Tooltip("Duration of i-frames in seconds")]
     [SerializeField]
-    private float iFrameDuration = 1f;
+    private float iFrameDuration = 0.2f;
 
     public float IFrameDuration
     {
@@ -80,13 +103,24 @@ public class PlayerVariables : MonoBehaviour
     public float Money
     {
         get => _money;
-        set => _money = value;
+        set
+        {
+            _money = value;
+            OnMoneyChanged.Invoke();
+        }
     }
+    public UnityEvent OnMoneyChanged;
 
     private PlayerInput _playerInput;
     private bool Damageable = true;
 
+    [SerializeField] private GameObject playerUI;
+
+    private Image HealthBar;
+
     #endregion
+
+    public static PlayerVariables Instance { get; private set; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -94,6 +128,28 @@ public class PlayerVariables : MonoBehaviour
         _health = _maxHealth;
         _playerInput = GetComponent<PlayerInput>();
         _playerInput.ActivateInput();
+
+        var imageComponents = playerUI.GetComponentsInChildren<Image>();
+
+        foreach (var component in imageComponents )
+        {
+            if (component.name == "HealthBar")
+            {
+                HealthBar = component;
+            }
+        }
+    }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     #region Methods
@@ -111,7 +167,10 @@ public class PlayerVariables : MonoBehaviour
         {
             Die();
         }
-        // Update Health Bar
+        
+        var ratio = _health / _maxHealth;
+
+        HealthBar.fillAmount = ratio;
     }
 
     private IEnumerator IFrames()
@@ -130,7 +189,7 @@ public class PlayerVariables : MonoBehaviour
             _health *= healthRatio;
         }
 
-        // Update UI if needed
+        HandleHealthUpdates();
     }
 
     private void Die()

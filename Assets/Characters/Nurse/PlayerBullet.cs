@@ -8,7 +8,7 @@ public class PlayerBullet : MonoBehaviour
     private float _lifespan = 5f;
 
     [HideInInspector]
-    public float EnemyDamage = 30f;
+    public float EnemyDamage;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,8 +26,15 @@ public class PlayerBullet : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("EnemyHitbox")) {
             //Debug.Log("Bullet hit enemy");
+            var enemy = collision.gameObject.transform.parent.gameObject;
 
-            collision.gameObject.GetComponentInParent<EnemyVariables>().Health -= EnemyDamage;
+            enemy.GetComponent<EnemyVariables>().Health -= (EnemyDamage);
+
+            if (ItemManager.Instance != null)
+            {
+                ItemManager.Instance.TriggerEnemyDamagedEffects(enemy);
+            }
+
             Destroy(gameObject);
         }
     }

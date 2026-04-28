@@ -7,6 +7,6 @@ public class WhiteMonster : BaseItem
 
     public override void UseItem(ItemManager manager)
     {
-        manager.PlayerMovement.MoveSpeed += manager.PlayerMovement.DefaultMoveSpeed * speedBoost;
+        manager.Movement.MoveSpeed += manager.Movement.DefaultMoveSpeed * (speedBoost / 100);
     }
 }

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ae34655c4779a4689623f63745e35c, type: 3}
+  m_Name: SuperSerum
+  m_EditorClassIdentifier: Assembly-CSharp::SuperSerum
+  itemName: Super Serum
+  itemDescription: The pinnacle of chemical engineering. Won't make you a super soldier
+    though.
+  itemRarity: 4
+  itemUseType: 0
+  itemClass: 2
+  image: {fileID: 0}
+  price: 1000
+  damageBoost: 30
+  speedBoost: 10
+  incomingDamageBuff: 10

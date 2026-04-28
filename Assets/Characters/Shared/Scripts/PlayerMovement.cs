@@ -318,6 +318,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void OnTestButton(InputValue value)
+    {
+        if (!value.isPressed || ShopBehaviour.Instance == null)
+        {
+            return;
+        }
+
+        if (ShopBehaviour.Instance.isActive)
+        {
+            ShopBehaviour.Instance.DisableShopMenu();
+        }
+        else
+        {
+            ShopBehaviour.Instance.OpenItemShop();
+        }
+    }
+
     #endregion
 
 }
