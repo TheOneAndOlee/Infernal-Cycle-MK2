@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class MeleeWeaponScript : MonoBehaviour
 {
     [SerializeField] private LawyerScript script;
+    [SerializeField] private float enemyDamage;
     private List<GameObject> damagedEnemies = new List<GameObject>();
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -18,7 +19,14 @@ public class MeleeWeaponScript : MonoBehaviour
 
             damagedEnemies.Add(collision.gameObject);
 
-            collision.gameObject.GetComponentInParent<EnemyVariables>().Health -= script.EnemyDamage;
+            var enemy = collision.gameObject.transform.parent.gameObject;
+
+            enemy.GetComponent<EnemyVariables>().Health -= (enemyDamage * PlayerVariables.Instance.DamageMultiplier);
+
+            if (ItemManager.Instance != null)
+            {
+                ItemManager.Instance.TriggerEnemyDamagedEffects(enemy);
+            }
         }
     }
     

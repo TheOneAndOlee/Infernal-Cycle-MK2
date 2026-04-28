@@ -5,26 +5,28 @@ using System.Collections.Generic;
 
 public class ItemManager : MonoBehaviour
 {
-    [SerializeField] private PlayerVariables playerVariables;
+    public static ItemManager Instance { get; private set; }
+
     [SerializeField] private PlayerMovement playerMovement;
 
-    public PlayerVariables Player => playerVariables;
-    public PlayerMovement PlayerMovement => playerMovement;
+    public PlayerVariables Variables => PlayerVariables.Instance;
+    public PlayerMovement Movement => playerMovement;
 
     [SerializeField] private BaseItem testItem;
     private Dictionary<BaseItem, int> items = new Dictionary<BaseItem, int>();
 
     private Dictionary<BaseItem, Coroutine> activeCoroutines = new Dictionary<BaseItem, Coroutine>();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
 
     public void AddItem(BaseItem item)
@@ -83,8 +85,13 @@ public class ItemManager : MonoBehaviour
         activeCoroutines[item] = newCoroutine;
     }
 
-    public void OnTestButton()
+    public void TriggerEnemyDamagedEffects(GameObject enemy)
     {
-        AddItem(testItem);
+        foreach (var itemPair in items)
+        {
+            BaseItem item = itemPair.Key;
+
+            item.OnEnemyDamaged(enemy, this);
+        }
     }
 }

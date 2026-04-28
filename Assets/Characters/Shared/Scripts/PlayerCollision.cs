@@ -3,7 +3,6 @@ using UnityEngine;
 public class PlayerCollision : MonoBehaviour
 {
     private Transform playerTransform;
-    private PlayerVariables playerVariables;
     private LayerMask enemyLayer;
     private LayerMask groundLayer;
     private LayerMask platformLayer;
@@ -13,7 +12,6 @@ public class PlayerCollision : MonoBehaviour
         platformLayer = LayerMask.GetMask("Platform");
         enemyLayer = LayerMask.GetMask("Enemy");
         playerTransform = transform;
-        playerVariables = GetComponent<PlayerVariables>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -28,9 +26,12 @@ public class PlayerCollision : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("EnemyHitbox"))
         {
             //Debug.Log("Collided with enemy: " + collision.gameObject.name);
-            
+
             float incomingDamage = collision.gameObject.GetComponentInParent<EnemyVariables>().Damage;
-            playerVariables.Health -= incomingDamage;
+            if (PlayerVariables.Instance != null)
+            {
+                PlayerVariables.Instance.Health -= incomingDamage;
+            }
         }
         //else
         //{

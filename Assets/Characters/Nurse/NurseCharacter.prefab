@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 3009751003501567303}
   - component: {fileID: 5811532515086994412}
   - component: {fileID: 6104986171797465383}
-  - component: {fileID: 7675287593530627544}
   m_Layer: 8
   m_Name: NurseCharacter
   m_TagString: Untagged
@@ -162,6 +161,7 @@ MonoBehaviour:
   _defaultDashDuration: 0.2
   _defaultDashCooldown: 1
   _defaultDashSpeed: 15
+  _animator: {fileID: 0}
 --- !u!114 &-2981403589065637341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,7 +176,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVariables
   _maxHealth: 100
   _damageMultiplier: 1
+  _incomingDamageMultiplier: 1
+  _healingMultiplier: 1
   iFrameDuration: 1
+  OnMoneyChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  playerUI: {fileID: 0}
 --- !u!114 &3009751003501567303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,22 +219,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36957856687290f4492d1ceec7bf541c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemManager
-  playerVariables: {fileID: -2981403589065637341}
   playerMovement: {fileID: 4145278931239845629}
   testItem: {fileID: 11400000, guid: 3ea5486432b5211418cd3f1a6b014ee2, type: 2}
---- !u!114 &7675287593530627544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 837461408001431901}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd6e037142234214ea4c96dcee497741, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NurseScript
-  _gun: {fileID: 5886387081471209136}
 --- !u!1 &3663871651344620956
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,20 +364,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7542749744615149159, guid: 31948af478301d142a90951c02266537, type: 3}
-      propertyPath: _damage
-      value: 30
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31948af478301d142a90951c02266537, type: 3}
---- !u!1 &5886387081471209136 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 153502617777299378, guid: 31948af478301d142a90951c02266537, type: 3}
-  m_PrefabInstance: {fileID: 6021871312576672002}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6554898549787175025 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 677318463688464755, guid: 31948af478301d142a90951c02266537, type: 3}

@@ -12,9 +12,20 @@ public abstract class BaseAbility : ScriptableObject
     [SerializeField]
     private string _abilityName;
 
+    public string AbilityName
+    {
+        get => _abilityName;
+    }
+
     [Tooltip("The cooldown for the ability in seconds")]
     [SerializeField]
     private float _abilityCooldown;
+
+    public float AbilityCooldown
+    {
+        get => _abilityCooldown;
+        set => _abilityCooldown = value;
+    }
 
     [Tooltip("The description for the ability")]
     [SerializeField]
@@ -24,36 +35,21 @@ public abstract class BaseAbility : ScriptableObject
     [SerializeField]
     private float _abilityDuration;
 
-    private bool isOnCooldown = false;
-    #endregion
-
-    #region Getters and Setters
-
-    public string AbilityName
-    {
-        get => _abilityName;
-    }
-
-    public float AbilityCooldown
-    {
-        get => _abilityCooldown;   
-        set => _abilityCooldown = value;
-    }
-
-    private string AbilityDescription
-    {
-        get => _abilityDescription;
-        set => _abilityDescription = value;
-    }
-
-    private float AbilityDuration
+    public float AbilityDuration
     {
         get => _abilityDuration;
         set => _abilityDuration = value;
     }
+
+    protected bool isOnCooldown = false;
     #endregion
 
     #region Methods
+
+    private void OnEnable()
+    {
+        isOnCooldown = false;
+    }
 
     public virtual void UseAbility(AbilityManager manager)
     {

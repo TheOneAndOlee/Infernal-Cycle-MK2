@@ -18,4 +18,6 @@ MonoBehaviour:
   itemRarity: 0
   itemUseType: 0
   itemClass: 2
-  speedBoost: 0.1
+  image: {fileID: 0}
+  price: 75
+  speedBoost: 10
