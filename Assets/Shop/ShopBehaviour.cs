@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using static UnityEditor.Progress;
+//using static UnityEditor.Progress;
 
 public class ShopBehaviour : MonoBehaviour
 {

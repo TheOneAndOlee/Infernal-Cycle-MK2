@@ -150,7 +150,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopBehaviour
   shopChoicePrefab: {fileID: 3502385991948591675, guid: 7d5854f167d3ab64cbc7d840dcd3e671, type: 3}
-  itemManager: {fileID: 0}
   shopCamera: {fileID: 0}
   itemList: {fileID: 4088802130952131194}
   shopCanvas: {fileID: 52513851722372379}
@@ -537,8 +536,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
