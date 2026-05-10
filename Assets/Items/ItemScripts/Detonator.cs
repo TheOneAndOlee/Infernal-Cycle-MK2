@@ -21,7 +21,13 @@ public class Detonator : BaseItem
     {
         if (Time.time >= lastTriggered + cooldown)
         {
-
+            lastTriggered = Time.time;
+            
+            if (enemy.TryGetComponent<EnemyVariables>(out var variables))
+            {
+                variables.Health -= extraDamage;
+                Debug.Log($"Detonator triggered! Extra damage: {extraDamage}");
+            }
         }
     }
 }
